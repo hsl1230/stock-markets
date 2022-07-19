@@ -4,10 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.example.stockmarkets.document.DowJonesIndex;
 import org.apache.commons.csv.CSVFormat;
@@ -26,25 +30,25 @@ public class CsvUtil {
         data.setStock(csvRecord.get("stock"));
 
         String pattern = "M/d/yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 
         try {
-            data.setDate(simpleDateFormat.parse(csvRecord.get("Date")));
-        } catch (ParseException e) {
+            data.setDate(LocalDate.parse(csvRecord.get("Date"), formatter));
+        } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
 
-        data.setOpen(Double.parseDouble(csvRecord.get("open")));
-        data.setHigh(Double.parseDouble(csvRecord.get("high")));
-        data.setLow(Double.parseDouble(csvRecord.get("low")));
-        data.setClose(Double.parseDouble(csvRecord.get("close")));
+        data.setOpen(getCurrencyOf(csvRecord.get("open")));
+        data.setHigh(getCurrencyOf(csvRecord.get("high")));
+        data.setLow(getCurrencyOf(csvRecord.get("low")));
+        data.setClose(getCurrencyOf(csvRecord.get("close")));
         data.setVolume(Long.parseLong(csvRecord.get("volume")));
         data.setPercentChangePrice(getDoubleValueOf(csvRecord.get("percent_change_price")));
         data.setPercentChangeVolumeOverLastWeek(getDoubleValueOf(csvRecord.get("percent_change_volume_over_last_wk")));
         data.setPreviousWeeksVolume(getLongValueOf(csvRecord.get("previous_weeks_volume")));
-        data.setNextWeeksOpen(getDoubleValueOf(csvRecord.get("next_weeks_open")));
-        data.setNextWeeksClose(getDoubleValueOf(csvRecord.get("next_weeks_close")));
-        data.setPercentChangePrice(getDoubleValueOf(csvRecord.get("percent_change_next_weeks_price")));
+        data.setNextWeeksOpen(getCurrencyOf(csvRecord.get("next_weeks_open")));
+        data.setNextWeeksClose(getCurrencyOf(csvRecord.get("next_weeks_close")));
+        data.setPercentChangeNextWeeksPrice(getDoubleValueOf(csvRecord.get("percent_change_next_weeks_price")));
         data.setDaysToNextDividend(getIntValueOf(csvRecord.get("days_to_next_dividend")));
         data.setPercentReturnNextDividend(getDoubleValueOf(csvRecord.get("percent_return_next_dividend")));
 
@@ -56,6 +60,14 @@ public class CsvUtil {
             return null;
         } else {
             return Double.parseDouble(value);
+        }
+    }
+
+    private static Double getCurrencyOf(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        } else {
+            return getDoubleValueOf(value.replaceAll("[^\\d.]+", ""));
         }
     }
 
@@ -75,12 +87,11 @@ public class CsvUtil {
         }
     }
 
-
     public static List<DowJonesIndex> parseCsvFile(InputStream is) {
         BufferedReader fileReader = null;
         CSVParser csvParser = null;
 
-        List<DowJonesIndex> dowJonesIndexes = new ArrayList<DowJonesIndex>();
+        List<DowJonesIndex> dowJonesIndexes = new ArrayList<>();
 
         try {
             fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -91,7 +102,6 @@ public class CsvUtil {
                             .setIgnoreHeaderCase(true)
                             .setTrim(true)
                             .build());
-
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
@@ -106,8 +116,12 @@ public class CsvUtil {
             throw new RuntimeException("Reading CSV Error!", e);
         } finally {
             try {
-                fileReader.close();
-                csvParser.close();
+                if (fileReader != null) {
+                    fileReader.close();
+                }
+                if (csvParser != null) {
+                    csvParser.close();
+                }
             } catch (IOException e) {
                 logger.error("Closing fileReader/csvParser Error!", e);
             }

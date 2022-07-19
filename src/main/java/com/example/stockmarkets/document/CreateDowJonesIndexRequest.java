@@ -1,19 +1,12 @@
 package com.example.stockmarkets.document;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 
-@Document(collection = "stock_markets")
-public class DowJonesIndex {
-    @Id
-    private String id;
-
+public class CreateDowJonesIndexRequest {
     private int quarter; // the yearly quarter (1 = Jan-Mar; 2 = Apr=Jun).
     private String stock; // the stock symbol (see above)
     @Schema(description = "date", example = "1/30/2020", format = "M/d/yyyy", required = true, nullable = false)
@@ -161,13 +154,5 @@ public class DowJonesIndex {
 
     public void setDaysToNextDividend(Integer daysToNextDividend) {
         this.daysToNextDividend = daysToNextDividend;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }

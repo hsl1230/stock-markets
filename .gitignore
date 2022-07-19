@@ -8,6 +8,7 @@ build/
 ### STS ###
 .apt_generated
 .classpath
+.history
 .factorypath
 .project
 .settings

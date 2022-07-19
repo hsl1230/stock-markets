@@ -17,18 +17,22 @@ public class DowJonesIndexService {
         this.repository = repository;
     }
 
-    public DowJonesIndex saveDowJonesIndex(DowJonesIndex dowJonesIndex){
+    public DowJonesIndex saveDowJonesIndex(DowJonesIndex dowJonesIndex) {
         return repository.save(dowJonesIndex);
     }
 
-    public List<DowJonesIndex> findDowJonesIndexByStock(String stock){
+    public List<DowJonesIndex> findDowJonesIndexByStock(String stock) {
         return repository.findByStock(stock);
     }
 
-    public Optional<DowJonesIndex> deleteDowJonesIndex(String id) {
+    public DowJonesIndex deleteDowJonesIndex(String id) {
         Optional<DowJonesIndex> result = repository.findById(id);
-        repository.deleteById(id);
-        return result;
+        if (result.isPresent()) {
+            repository.deleteById(id);
+            return result.get();
+        } else {
+            return null;
+        }
     }
 
 }
