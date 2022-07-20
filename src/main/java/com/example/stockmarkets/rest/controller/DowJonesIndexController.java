@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,8 +46,9 @@ public class DowJonesIndexController {
     public ResponseEntity<Response> loadIndexes(@RequestPart("csvfile") MultipartFile csvfile) {
         Response response = new Response();
 
-        if (csvfile.getOriginalFilename().isEmpty()) {
-            response.addMessage(new Message(csvfile.getOriginalFilename(),
+        if (!StringUtils.hasLength(csvfile.getOriginalFilename())) {
+            response.addMessage(new Message(
+                    csvfile.getOriginalFilename(),
                     "No selected file to upload! Please do the checking", "failed"));
 
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

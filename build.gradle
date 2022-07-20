@@ -20,6 +20,7 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.9.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.google.guava:guava:31.1-jre'
 }
 
 tasks.named('test') {

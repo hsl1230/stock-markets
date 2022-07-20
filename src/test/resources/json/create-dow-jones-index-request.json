@@ -1,0 +1,18 @@
+{
+  "quarter": 1,
+  "stock": "AA",
+  "date": "1/7/2011",
+  "open": 15.82,
+  "high": 16.72,
+  "low": 15.78,
+  "close": 16.42,
+  "volume": 239655616,
+  "percentChangePrice": 3.79267,
+  "percentChangeVolumeOverLastWeek": null,
+  "previousWeeksVolume": null,
+  "nextWeeksOpen": 16.71,
+  "nextWeeksClose": 15.97,
+  "percentChangeNextWeeksPrice": -4.42849,
+  "daysToNextDividend": 26,
+  "percentReturnNextDividend": 0.182704
+}
