@@ -12,6 +12,26 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    apiTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/apiTest/java')
+        }
+        resources.srcDir file('src/apiTest/resources')
+    }
+}
+
+def apiTest = sourceSets.apiTest;
+
+configurations[apiTest.implementationConfigurationName].extendsFrom(configurations.testImplementation)
+configurations[apiTest.runtimeOnlyConfigurationName].extendsFrom(configurations.testRuntimeOnly)
+
+// // check.dependsOn -= apiTest
+// check.dependsOn apiTest
+// apiTest.mustRunAfter test
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -21,9 +41,29 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.google.guava:guava:31.1-jre'
+    // testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.23.1'
+    // testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.1.1'
+
+    apiTestImplementation project
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+def apiTestTask = tasks.register('apiTest', Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+    useJUnitPlatform()
+
+    testClassesDirs = apiTest.output.classesDirs
+    classpath = configurations[apiTest.runtimeClasspathConfigurationName] + apiTest.output
+
+    shouldRunAfter(tasks.named('test'))
+}
+
+tasks.named('check') {
+    dependsOn(apiTestTask)
+}
+
 targetCompatibility = JavaVersion.VERSION_16
