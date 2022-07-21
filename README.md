@@ -21,6 +21,12 @@ The project was developed on Ubuntu 22.04 LTS
 - Add security(authentication and authorization) through access token to the micro services
 - Add spring cloud services(Config service, Netflix service and Vault Service)
 
+## Build the project together with unit test and api test
+
+```bash
+./gradlew clean build
+```
+
 ## Execute unit tests
 
 ```bash
@@ -33,24 +39,28 @@ The project was developed on Ubuntu 22.04 LTS
 ./gradlew apiTest
 ```
 
-## Launch up the project though docker compose
+## Clone the source code from github
 
-- Clone the source code from github by `git clone https://github.com/hsl1230/stock-markets.git`
+```bash
+git clone https://github.com/hsl1230/stock-markets.git
+```
+
+## Launch up the application
+
+### Pull docker compose images from internet
+
 - Change directory to the folder stock-markets
 - Get the containers from internet by executing `docker compose pull`
+
+### Build docker compose images from your local
+
+```bash
+docker compose build
+```
+
 - Start up services by executing `docker compose up -d`
 - Launch up swagger-ui of the micro services by open the link(http://localhost:25000/swagger-ui/index.html)
 - Launch up mongo-express by open the link(http://localhost:8081)
- 
-
-## Launch up the project though building it from your local
-
-- Clone the source code from github by `git clone https://github.com/hsl1230/stock-markets.git`
-- Build the containers by executing `docker compose build`
-- Start up services by executing `docker compose up -d`
-- Launch up swagger-ui of the micro services by open the link(http://localhost:25000/swagger-ui/index.html)
-- Launch up mongo-express by open the link(http://localhost:8081)
-
 
 ## Stop docker compose services
 
