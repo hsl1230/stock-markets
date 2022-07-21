@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'com.adarshr.test-logger' version '3.2.0'
 }
 
 group = 'com.example'
@@ -13,10 +14,24 @@ repositories {
 }
 
 sourceSets {
+    testCommon {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/testCommon/java')
+        }
+        resources.srcDir file('src/testCommon/resources')
+    }
+    test {
+        java {
+            compileClasspath += testCommon.output
+            runtimeClasspath += testCommon.output
+        }
+    }
     apiTest {
         java {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
+            compileClasspath += main.output + testCommon.output
+            runtimeClasspath += main.output + testCommon.output
             srcDir file('src/apiTest/java')
         }
         resources.srcDir file('src/apiTest/resources')
