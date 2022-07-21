@@ -19,31 +19,24 @@
 - Add security(authentication and authorization) through access token to the micro services
 - Add spring cloud services(Config service, Netflix service and Vault Service)
 
-## Build the project
+## Launch up the project though docker compose
 
-```bash
-./gradlew clean build
-```
+- Clone the source code from github by `git clone https://github.com/hsl1230/stock-markets.git`
+- Change directory to the folder stock-markets
+- Get the containers from internet by executing `docker compose pull`
+- Start up services by executing `docker compose up -d`
+- Launch up swagger-ui of the micro services by open the link(http://localhost:25000/swagger-ui/index.html)
+- Launch up mongo-express by open the link(http://localhost:8081)
+ 
 
-## Build the containers
+## Launch up the project though building it from your local
 
-```bash
-docker compose build
-```
+- Clone the source code from github by `git clone https://github.com/hsl1230/stock-markets.git`
+- Build the containers by executing `docker compose build`
+- Start up services by executing `docker compose up -d`
+- Launch up swagger-ui of the micro services by open the link(http://localhost:25000/swagger-ui/index.html)
+- Launch up mongo-express by open the link(http://localhost:8081)
 
-## Start docker compose services
-
-```bash
-docker compose up -d
-```
-
-## Launch up swagger-ui of the micro services
-
-http://localhost:25000/swagger-ui/index.html
-
-## Launch up mongo-express
-
-http://localhost:8081
 
 ## Stop docker compose services
 
