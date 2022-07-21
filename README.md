@@ -5,6 +5,7 @@ The project was developed on Ubuntu 22.04 LTS
 ## Prerequisite
 
 [Docker compose install](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)ed on Ubuntu
+
 Tested on docker compose version v2.6.1 on Ubuntu 22.04 LTS
 
 ## Highlights
