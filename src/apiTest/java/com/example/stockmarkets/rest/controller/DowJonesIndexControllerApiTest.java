@@ -18,9 +18,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.stockmarkets.StockMarketsApplication;
+import com.example.stockmarkets.document.DowJonesIndex;
 import com.example.stockmarkets.repository.DowJonesIndexRepository;
 import com.example.stockmarkets.service.CsvFileService;
 import com.example.stockmarkets.service.DowJonesIndexService;
+import com.example.stockmarkets.util.JsonLoaderUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import io.restassured.RestAssured;
 
@@ -54,11 +57,16 @@ public class DowJonesIndexControllerApiTest {
 
 	@Test
 	public void findDowJonesIndicesSuccess() {
-		when(dowJonesIndexRepository.findByStock(anyString())).thenReturn(List.of());
+		List<DowJonesIndex> mockListOfDowJonesIndex = JsonLoaderUtil.getObjectFrom(
+				"list-of-dow-jones-index.json",
+				new TypeReference<List<DowJonesIndex>>() {
+				});
+		when(dowJonesIndexRepository.findByStock(anyString())).thenReturn(mockListOfDowJonesIndex);
+
 		given()
 				.contentType(CONTENT_TYPE)
 				.queryParam("stock", "AA")
-				.when().get("/api/dow-jones-indices")
-				.then().log().all().statusCode(HttpStatus.SC_OK);
+		.when().get("/api/dow-jones-indices")
+		.then().log().all().statusCode(HttpStatus.SC_OK);
 	}
 }
