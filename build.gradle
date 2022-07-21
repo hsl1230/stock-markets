@@ -16,8 +16,8 @@ repositories {
 sourceSets {
     testCommon {
         java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
+            // compileClasspath += main.output
+            // runtimeClasspath += main.output
             srcDir file('src/testCommon/java')
         }
         resources.srcDir file('src/testCommon/resources')
@@ -30,18 +30,29 @@ sourceSets {
     }
     apiTest {
         java {
-            compileClasspath += main.output + testCommon.output
-            runtimeClasspath += main.output + testCommon.output
+            compileClasspath += testCommon.output
+            runtimeClasspath += testCommon.output
             srcDir file('src/apiTest/java')
         }
         resources.srcDir file('src/apiTest/resources')
     }
 }
 
-def apiTest = sourceSets.apiTest;
+// def apiTest = sourceSets.apiTest;
+def testCommon = sourceSets.testCommon;
 
-configurations[apiTest.implementationConfigurationName].extendsFrom(configurations.testImplementation)
-configurations[apiTest.runtimeOnlyConfigurationName].extendsFrom(configurations.testRuntimeOnly)
+configurations {
+    testCommonImplementation.extendsFrom testImplementation
+    testCommonRuntimeOnly.extendsFrom testRuntimeOnly
+    apiTestImplementation.extendsFrom testImplementation
+    apiTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+// configurations[testCommon.implementationConfigurationName].extendsFrom(configurations.testImplementation)
+// configurations[testCommon.runtimeOnlyConfigurationName].extendsFrom(configurations.testRuntimeOnly)
+
+// configurations[apiTest.implementationConfigurationName].extendsFrom(configurations.testImplementation)
+// configurations[apiTest.runtimeOnlyConfigurationName].extendsFrom(configurations.testRuntimeOnly)
 
 // // check.dependsOn -= apiTest
 // check.dependsOn apiTest
@@ -69,19 +80,31 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-def apiTestTask = tasks.register('apiTest', Test) {
+task apiTest(type: Test) {
     description = 'Runs integration tests.'
     group = 'verification'
     useJUnitPlatform()
 
-    testClassesDirs = apiTest.output.classesDirs
-    classpath = configurations[apiTest.runtimeClasspathConfigurationName] + apiTest.output
+    testClassesDirs = sourceSets.apiTest.output.classesDirs
+    classpath = sourceSets.apiTest.runtimeClasspath + sourceSets.apiTest.output
 
     shouldRunAfter(tasks.named('test'))
 }
 
+
+// def apiTestTask = tasks.register('apiTest', Test) {
+//     description = 'Runs integration tests.'
+//     group = 'verification'
+//     useJUnitPlatform()
+
+//     testClassesDirs = apiTest.output.classesDirs
+//     classpath = configurations[apiTest.runtimeClasspathConfigurationName] + apiTest.output
+
+//     shouldRunAfter(tasks.named('test'))
+// }
+
 tasks.named('check') {
-    dependsOn(apiTestTask)
+    dependsOn(tasks.named('apiTest'))
 }
 
 targetCompatibility = JavaVersion.VERSION_16
