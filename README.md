@@ -5,6 +5,8 @@
 - Springfox is used to provide a swagger-ui
 - All endpoints created can be tested through the swagger-ui
 - File upload is supported in the swagger-ui
+- Unit tests are added and passed
+- Api test is set up as a gradle task, ready to add more tests
 - MongoRepository is used to access mongo db
 - Docker compose is used to set up the dev env
 
