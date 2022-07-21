@@ -39,10 +39,13 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:3.1.0'
     implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.9.0'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.codehaus.groovy', module: 'groovy'
+    }
     testImplementation 'com.google.guava:guava:31.1-jre'
-    // testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.23.1'
-    // testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.1.1'
+    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.1.1'
+    testImplementation group: 'io.rest-assured', name: 'json-path', version: '5.1.1'
+    testImplementation group: 'io.rest-assured', name: 'xml-path', version: '5.1.1'
 
     apiTestImplementation project
 }

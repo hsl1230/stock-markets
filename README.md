@@ -1,5 +1,7 @@
 # stock-markets
 
+The project was developed on Ubuntu 22.04 LTS
+
 ## Highlights
 
 - Springfox is used to provide a swagger-ui
@@ -18,6 +20,18 @@
 - Add privilege service to manage and check the permissions
 - Add security(authentication and authorization) through access token to the micro services
 - Add spring cloud services(Config service, Netflix service and Vault Service)
+
+## Execute unit tests
+
+```bash
+./gradlew test
+```
+
+## Execute api tests
+
+```bash
+./gradlew apiTest
+```
 
 ## Launch up the project though docker compose
 
