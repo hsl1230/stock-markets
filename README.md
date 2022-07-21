@@ -52,11 +52,13 @@ git clone https://github.com/hsl1230/stock-markets.git
 - Change directory to the folder stock-markets
 - Get the containers from internet by executing `docker compose pull`
 
-### Build docker compose images from your local
+### Or build docker compose images from your local
 
 ```bash
 docker compose build
 ```
+
+### Run docker compose containers
 
 - Start up services by executing `docker compose up -d`
 - Launch up swagger-ui of the micro services by open the link(http://localhost:25000/swagger-ui/index.html)
