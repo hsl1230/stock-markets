@@ -1,7 +1,8 @@
 # stock-markets
 
 The project was developed on Ubuntu 22.04 LTS
-[requirement](./BE Assessment.docx)
+
+[requirement](../../BE_Assessment.docx)
 
 ## Prerequisite
 
