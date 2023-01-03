@@ -2,7 +2,7 @@
 
 The project was developed on Ubuntu 22.04 LTS
 
-[requirement](../../BE_Assessment.docx)
+[requirement](../../BE%20Assessment.docx)
 
 ## Prerequisite
 
